@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>木漏れ日旅程 | Komorebi Travel</title>
+    <style>
+        :root {
+            --bg-color: #fdfdfc; --card-bg: #ffffff; --text-main: #2c3e50; --text-muted: #7f8c8d;
+            --accent-matcha: #8b9a84; --accent-sakura: #f2d0d9; --accent-blue: #a3c1ad;
+            --tag-eat: #ff9f43; --tag-buy: #ee5253; --tag-shoot: #0abde3; --tag-vbp: #6c5ce7; --tag-fun: #00cec9;
+            --alert-bg: #fff5f5; --alert-text: #c0392b; --tip-bg: #f0f7f4; --tip-text: #27ae60; --shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { font-family: sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; display: flex; justify-content: center; }
+        #app { width: 100%; max-width: 500px; min-height: 100vh; position: relative; padding-bottom: 60px; }
+        
+        .header { padding: 24px 20px; background: var(--bg-color); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent-matcha); }
+        
+        .day-selector { display: flex; overflow-x: auto; padding: 10px 20px; gap: 12px; background: var(--bg-color); border-bottom: 1px solid #f0f0f0; }
+        .day-tab { flex: 0 0 auto; padding: 8px 16px; border-radius: 20px; background: #f0f0f0; font-size: 0.9rem; color: var(--text-muted); cursor: pointer; border: none; }
+        .day-tab.active { background: var(--accent-matcha); color: white; }
+        
+        .summary-card { margin: 15px 20px; padding: 20px; background: white; border-radius: 16px; box-shadow: var(--shadow); }
+        .day-theme-icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+        
+        .hotel-box { margin: 10px 20px; padding: 12px 16px; background: #f1f2f6; border-radius: 12px; font-size: 0.85rem; display: flex; align-items: center; gap: 12px; border: 1px solid #dfe4ea; }
+        
+        .spot-card { margin: 20px; background: white; border-radius: 20px; padding: 24px; box-shadow: var(--shadow); border: 1px solid #f0f0f0; position: relative; }
+        .spot-name { font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+        .spot-desc { font-size: 0.95rem; color: #576574; margin-bottom: 15px; }
+        
+        .tag { font-size: 0.75rem; padding: 4px 12px; border-radius: 6px; color: white; font-weight: 700; margin-right: 5px; display: inline-block; }
+        .tag.eat { background: var(--tag-eat); } .tag.buy { background: var(--tag-buy); } .tag.shoot { background: var(--tag-shoot); } .tag.vbp { background: var(--tag-vbp); } .tag.fun { background: var(--tag-fun); }
+        
+        .btn-nav { width: 100%; padding: 12px; border-radius: 10px; border: none; font-size: 1rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; margin-top: 15px; }
+        .google-btn { background: #4285F4; }
+        .naver-btn { background: #03C75A; }
+        
+        .transit-card { margin: -10px 40px; padding: 10px 20px; border-left: 2px dashed var(--accent-blue); font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 10px; }
+        
+        .info-box { margin: 10px 20px; padding: 12px 16px; border-radius: 12px; font-size: 0.85rem; display: flex; gap: 10px; }
+        .info-box.alert { background: var(--alert-bg); color: var(--alert-text); border: 1px solid #fadbd8; }
+        .info-box.tip { background: var(--tip-bg); color: var(--tip-text); border: 1px solid #d4efdf; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div style="padding: 50px; text-align: center;">載入行程中...</div>
+    </div>
+
+    <script>
+        // --- 完整行程資料 ---
+        var itineraryData = [
+            { day: 1, city: "釜山", date: "8/13", location: "抵達釜山海雲台", icon: "✈️", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 101, name: "金海國際機場", category: "交通", desc: "抵達釜山第一航廈。", transport: { mode: "利木津巴士", duration: "約 60 分鐘" } }, { id: 102, name: "海雲台市場", category: "購物/食物", desc: "晚餐吃 BBQ 炸雞。", tags: ["必吃", "必拍"] }] },
+            { day: 2, city: "釜山", date: "8/14", location: "海濱雙列車與夜景", icon: "🚋", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 201, name: "天空膠囊列車", category: "活動", desc: "彩色小車廂。", tags: ["必拍"], transport: { mode: "步行", duration: "約 10 分鐘" } }, { id: 202, name: "味贊王鹽烤肉", category: "食物", desc: "厚切豬五花。", tags: ["必吃"], transport: { mode: "計程車", duration: "約 5 分鐘" } }, { id: 203, name: "海岸列車 (VBP)", category: "活動", desc: "Pass 兌換來回票。", tags: ["Visit Busan Pass", "必拍"] }] },
+            { day: 3, city: "釜山", date: "8/15", location: "影島藝術與松島", icon: "🎨", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 301, name: "影島 Arte Museum", category: "活動", desc: "數位光影藝術。", tags: ["Visit Busan Pass", "必拍"] }, { id: 302, name: "P.ARK 海景咖啡廳", category: "食物/景點", desc: "落地窗港灣。", tags: ["必拍"] }, { id: 303, name: "松島海上纜車", category: "活動", desc: "橫跨公海。", tags: ["Visit Busan Pass", "必拍"] }] },
+            { day: 4, city: "釜山", date: "8/16", location: "機張速度與樂園", icon: "🏎️", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 401, name: "Skyline Luge", category: "活動", desc: "山道急速滑下。", tags: ["Visit Busan Pass", "必玩"] }, { id: 402, name: "樂天世界釜山", category: "活動", desc: "童話樂園。", tags: ["Visit Busan Pass", "必玩"] }, { id: 403, name: "海東龍宮寺", category: "景點", desc: "沿海古寺。", tags: ["必拍"] }] },
+            { day: 5, city: "釜山", date: "8/17", location: "文青慢活與登船", icon: "🚢", hotel: { name: "新山茶花號", info: "夜宿渡輪" }, spots: [{ id: 501, name: "甘川洞文化村", category: "景點", desc: "彩色房子小王子。", tags: ["必拍"] }, { id: 502, name: "白淺灘文化村", category: "景點", desc: "海景咖啡廳。", tags: ["必拍"] }, { id: 504, name: "釜山港碼頭", category: "交通", desc: "前往福岡。" }] },
+            { day: 6, city: "福岡", date: "8/18", location: "福岡初印象", icon: "🍜", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 601, name: "博多港抵達", category: "交通", desc: "抵達福岡。" }, { id: 602, name: "櫛田神社", category: "景點", desc: "巨大的山笠。", tags: ["必拍"] }, { id: 603, name: "博多運河城", category: "購物", desc: "音樂噴泉。", tags: ["必拍"] }] },
+            { day: 7, city: "福岡", date: "8/19", location: "視覺藝術與夕陽", icon: "🗼", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 701, name: "DACOMECCA", category: "食物", desc: "網美早餐。", tags: ["必吃"] }, { id: 702, name: "teamLab Forest", category: "活動", desc: "數位森林。", tags: ["九州 Fun Pass", "必拍"] }, { id: 703, name: "福岡塔", category: "景點", desc: "夕陽聖地。", tags: ["九州 Fun Pass", "必拍"] }] },
+            { day: 8, city: "福岡", date: "8/20", location: "古都聖地", icon: "🎋", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 801, name: "柳川乘船", category: "活動", desc: "運河巡禮。", tags: ["必拍"] }, { id: 802, name: "竈門神社", category: "景點", desc: "最美御守。", tags: ["必買"] }, { id: 803, name: "太宰府天滿宮", category: "景點", desc: "梅餅與星巴克。", tags: ["必吃", "必拍"] }] },
+            { day: 9, city: "福岡", date: "8/21", location: "藝文公園散策", icon: "⛲", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 901, name: "六本松蔦屋書店", category: "購物", desc: "最美書店。", tags: ["必買"] }, { id: 902, name: "福岡市美術館", category: "景點", desc: "草間彌生南瓜。", tags: ["九州 Fun Pass", "必拍"] }, { id: 903, name: "大濠公園", category: "景點", desc: "湖畔漫步。", tags: ["必拍"] }] },
+            { day: 10, city: "福岡", date: "8/22", location: "日田巨人聖地", icon: "⚔️", hotel: { name: "龜山亭飯店", info: "溫泉旅館" }, spots: [{ id: 1001, name: "日田站兵長像", category: "景點", desc: "兵長雕像。", tags: ["必拍"] }, { id: 1002, name: "大山水壩", category: "景點", desc: "巨人牆。", tags: ["必拍"] }, { id: 1003, name: "巨人博物館", category: "景點", desc: "作者手稿。", tags: ["必拍"] }] },
+            { day: 11, city: "福岡", date: "8/23", location: "最終採買與歸途", icon: "🛍️", hotel: { name: "回溫馨的家", info: "台北" }, spots: [{ id: 1101, name: "豆田町老街", category: "購物", desc: "小京都散策。", tags: ["必買"] }, { id: 1102, name: "博多阪急蒙奇奇", category: "購物", desc: "專櫃尋寶。", tags: ["必買"] }, { id: 1103, name: "福岡機場", category: "交通", desc: "結束旅程。" }] }
+        ];
+
+        var selectedDay = 1;
+
+        function render() {
+            var data = itineraryData[selectedDay - 1];
+            var isBusan = data.city === "釜山";
+            var btnClass = isBusan ? "naver-btn" : "google-btn";
+            var btnText = isBusan ? "Naver 導航" : "Google 導航";
+            var mapBase = isBusan ? "https://m.map.naver.com/search2/search.naver?query=" : "https://www.google.com/maps/search/?api=1&query=";
+
+            var html = '';
+            
+            // Header
+            html += '<div class="header"><h1>木漏れ日旅程</h1><div style="text-align:right"><div style="font-size:0.8rem;color:var(--accent-matcha)">2026 Summer</div><div style="font-size:0.7rem;font-weight:bold">' + data.date + ' ' + data.location + '</div></div></div>';
+            
+            // Day Selector
+            html += '<div class="day-selector">';
+            itineraryData.forEach(function(d) {
+                html += '<button class="day-tab ' + (selectedDay === d.day ? 'active' : '') + '" onclick="setDay(' + d.day + ')">Day ' + d.day + '</button>';
+            });
+            html += '</div>';
+
+            // Summary Card
+            html += '<div class="summary-card"><span class="day-theme-icon">' + data.icon + '</span><div style="font-weight:bold">' + data.city + ' 行程</div></div>';
+
+            // Hotel Box
+            if(data.hotel) {
+                html += '<div class="hotel-box"><span style="font-size:1.5rem">🏨</span><div style="flex:1"><b>住宿：' + data.hotel.name + '</b><br><small>' + data.hotel.info + '</small></div>';
+                html += '<button class="day-tab active" style="padding:5px 10px;font-size:0.7rem" onclick="go(\'' + data.hotel.name + '\',\'' + mapBase + '\')">📍 導航</button></div>';
+            }
+
+            // Spots
+            data.spots.forEach(function(spot) {
+                html += '<div class="spot-card">';
+                html += '<div class="spot-name">' + spot.name + '</div>';
+                html += '<div class="spot-desc">' + spot.desc + '</div>';
+                if(spot.tags) {
+                    spot.tags.forEach(function(t) {
+                        var tClass = t.indexOf('吃')!==-1?'eat':t.indexOf('買')!==-1?'buy':t.indexOf('拍')!==-1?'shoot':t.indexOf('Pass')!==-1?'vbp':'fun';
+                        html += '<span class="tag ' + tClass + '">' + t + '</span>';
+                    });
+                }
+                html += '<button class="btn-nav ' + btnClass + '" onclick="go(\'' + spot.name + '\',\'' + mapBase + '\')">📍 開啟 ' + btnText + '</button>';
+                html += '</div>';
+                
+                if(spot.transport) {
+                    html += '<div class="transit-card"><span>🚌</span> ' + spot.transport.mode + ' (' + spot.transport.duration + ')</div>';
+                }
+            });
+
+            document.getElementById('app').innerHTML = html;
+        }
+
+        window.setDay = function(d) {
+            selectedDay = d;
+            render();
+            window.scrollTo(0,0);
+        };
+
+        window.go = function(name, base) {
+            window.open(base + encodeURIComponent(name));
+        };
+
+        // 啟動
+        render();
+
+        // 強制刪除 Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(var i=0; i<registrations.length; i++) registrations[i].unregister();
+            });
+        }
+    </script>
+</body>
+</html>
