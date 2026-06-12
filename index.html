@@ -90,8 +90,12 @@
         <div style="padding: 50px; text-align: center;">載入完整功能版...</div>
     </div>
 
-    <script src="js/itinerary.js"></script>
+    <script src="js/itinerary.js" onerror="scriptLoadError()"></script>
     <script>
+        function scriptLoadError() {
+            document.getElementById('app').innerHTML = '<div style="padding:40px; color:red; text-align:center;"><h3>腳本載入失敗</h3><p>無法讀取 js/itinerary.js</p><p><small>路徑：' + window.location.href + '</small></p></div>';
+        }
+
         // --- 全域錯誤監控 ---
         window.onerror = function(msg, url, line) {
             var app = document.getElementById('app');
