@@ -67,6 +67,22 @@
         
         .master-tips { margin: 30px 20px; padding: 24px; background: #2c3e50; color: #ecf0f1; border-radius: 24px; }
         .master-tip-item { display: flex; gap: 12px; margin-bottom: 16px; font-size: 0.85rem; }
+
+        /* 新增：提示與警告樣式 */
+        .info-box { margin: 15px 20px; padding: 15px; border-radius: 12px; font-size: 0.85rem; }
+        .tips-box { background: #f0f7f4; border: 1px solid #d4edda; color: #155724; }
+        .alerts-box { background: #fff5f5; border: 1px solid #f5c6cb; color: #721c24; }
+        .info-title { font-weight: bold; margin-bottom: 5px; display: flex; align-items: center; gap: 8px; }
+        
+        /* 新增：專家連結樣式 */
+        .expert-section { margin: 30px 20px; padding: 20px; background: #f8f9fa; border-radius: 16px; border: 1px solid #eee; }
+        .expert-title { font-size: 1rem; font-weight: bold; color: var(--accent-matcha); margin-bottom: 15px; border-bottom: 2px solid var(--accent-matcha); padding-bottom: 5px; }
+        .expert-link { display: block; padding: 10px; background: white; border-radius: 8px; margin-bottom: 10px; text-decoration: none; color: #2c3e50; font-size: 0.85rem; border: 1px solid #eee; transition: 0.2s; }
+        .expert-link:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+        /* 新增：景點時間樣式 */
+        .spot-time { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; margin-left: 8px; }
+        .spot-hours { font-size: 0.75rem; color: #e67e22; margin-top: -5px; margin-bottom: 10px; }
     </style>
 </head>
 <body>
@@ -74,24 +90,11 @@
         <div style="padding: 50px; text-align: center;">載入完整功能版...</div>
     </div>
 
+    <script src="js/itinerary.js"></script>
     <script>
-        // --- 完整行程資料 (包含所有細節) ---
-        var itineraryData = [
-            { dailyMasterTips: [{icon: '🚌', title: '利木津巴士', desc: '金海機場 1F 2號站牌可搭往海雲台。'}, {icon: '💱', title: '換錢提醒', desc: '海雲台市場周邊有 Money Box，匯率較好。'}], day: 1, city: "釜山", date: "8/13", location: "抵達釜山海雲台", icon: "✈️", outfit: "透氣短 T + 短褲", weather: "☀️ 酷暑晴朗。", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, startTransport: { mode: "利木津巴士", duration: "約 60 分鐘" }, spots: [{ id: 101, name: "金海國際機場", category: "交通", desc: "抵達釜山第一航廈。", tags: [], photoTip: "機場大門口看板。" }, { id: 102, name: "海雲台市場", category: "購物/食物", desc: "晚餐吃 BBQ 炸雞。", tags: ["必吃", "必拍"], photoTip: "霓虹招牌。" }] },
-            { dailyMasterTips: [{icon: '⏰', title: 'VBP 啟動', desc: '13:00 啟動後，效期 48hr 涵蓋到 D4。'}], day: 2, city: "釜山", date: "8/14", location: "海濱雙列車與夜景", icon: "🚋", outfit: "亮色系洋裝", weather: "🌊 海邊風大。", passStatus: "Visit Busan Pass 已啟用", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 201, name: "天空膠囊列車", category: "活動", desc: "彩色小車廂。", tags: ["必拍"], photoTip: "對拍。", transport: { mode: "步行", duration: "約 10 分鐘" } }, { id: 202, name: "味贊王鹽烤肉", category: "食物", desc: "厚切豬五花。", tags: ["必吃"], photoTip: "代烤過程。", transport: { mode: "計程車", duration: "約 5 分鐘" } }, { id: 203, name: "海岸列車 (VBP)", category: "活動", desc: "Pass 兌換來回票。", tags: ["Visit Busan Pass", "必拍"], photoTip: "側拍海岸。" }] },
-            { day: 3, city: "釜山", date: "8/15", location: "影島藝術與松島", icon: "🎨", outfit: "白色系服飾", weather: "☁️ 多雲轉晴。", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 301, name: "影島 Arte Museum", category: "活動", desc: "數位光影藝術。", tags: ["Visit Busan Pass", "必拍"], photoTip: "投影互動。" }, { id: 302, name: "P.ARK 海景咖啡廳", category: "食物/景點", desc: "落地窗港灣。", tags: ["必拍"], photoTip: "剪影照。" }, { id: 303, name: "松島海上纜車", category: "活動", desc: "橫跨公海。", tags: ["Visit Busan Pass", "必拍"], photoTip: "透明車廂。" }] },
-            { day: 4, city: "釜山", date: "8/16", location: "機張速度與樂園", icon: "🏎️", outfit: "運動風套裝", weather: "🔥 炎熱。", passStatus: "Visit Busan Pass 最終日", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, spots: [{ id: 401, name: "Skyline Luge", category: "活動", desc: "山道急速滑下。", tags: ["Visit Busan Pass", "必玩"], photoTip: "終點照。" }, { id: 402, name: "樂天世界釜山", category: "活動", desc: "童話樂園。", tags: ["Visit Busan Pass", "必玩"], photoTip: "城堡背景。" }, { id: 403, name: "海東龍宮寺", category: "景點", desc: "沿海古寺。", tags: ["必拍"], photoTip: "側拍大佛。" }] },
-            { day: 5, city: "釜山", date: "8/17", location: "文青慢活與登船", icon: "🚢", outfit: "淡雅風", weather: "🌅 傍晚登船。", hotel: { name: "新山茶花號", info: "夜宿渡輪" }, spots: [{ id: 501, name: "甘川洞文化村", category: "景點", desc: "彩色房子小王子。", tags: ["必拍"], photoTip: "背影照。" }, { id: 502, name: "白淺灘文化村", category: "景點", desc: "海景咖啡廳。", tags: ["必拍"], photoTip: "窗邊照。" }, { id: 504, name: "釜山港碼頭", category: "交通", desc: "前往福岡。", tags: ["必拍"], photoTip: "甲板夜景。" }] },
-            { dailyMasterTips: [{icon: '🛒', title: '驚安', desc: '飯店對面 24hr。'}], day: 6, city: "福岡", date: "8/18", location: "福岡初印象", icon: "🍜", outfit: "日系休閒", weather: "🌤️ 濕熱。", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 601, name: "博多港抵達", category: "交通", desc: "抵達福岡。", tags: [], photoTip: "下船首拍。" }, { id: 602, name: "櫛田神社", category: "景點", desc: "巨大的山笠。", tags: ["必拍"], photoTip: "山笠展示。" }, { id: 603, name: "博多運河城", category: "購物", desc: "音樂噴泉。", tags: ["必拍"], photoTip: "水舞表演。" }] },
-            { day: 7, city: "福岡", date: "8/19", location: "視覺藝術與夕陽", icon: "🗼", outfit: "淺色衣物", weather: "🌡️ 高溫。", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 701, name: "DACOMECCA", category: "食物", desc: "網美早餐。", tags: ["必吃"], photoTip: "夾心麵包。" }, { id: 702, name: "teamLab Forest", category: "活動", desc: "數位森林。", tags: ["九州 Fun Pass", "必拍"], photoTip: "投影花海。" }, { id: 703, name: "福岡塔", category: "景點", desc: "夕陽聖地。", tags: ["九州 Fun Pass", "必拍"], photoTip: "海上日落。" }] },
-            { day: 8, city: "福岡", date: "8/20", location: "古都聖地", icon: "🎋", outfit: "優雅休閒", weather: "🌦️ 雷陣雨。", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 801, name: "柳川乘船", category: "活動", desc: "運河巡禮。", tags: ["必拍"], photoTip: "划船工。" }, { id: 802, name: "竈門神社", category: "景點", desc: "最美御守。", tags: ["必買"], photoTip: "社務所。" }, { id: 803, name: "太宰府天滿宮", category: "景點", desc: "梅餅與星巴克。", tags: ["必吃", "必拍"], photoTip: "木樁牆。" }] },
-            { day: 9, city: "福岡", date: "8/21", location: "藝文公園散策", icon: "⛲", outfit: "棉麻裝", weather: "🍃 舒適。", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, spots: [{ id: 901, name: "六本松蔦屋書店", category: "購物", desc: "最美書店。", tags: ["必買"], photoTip: "書廊。" }, { id: 902, name: "福岡市美術館", category: "景點", desc: "草間彌生南瓜。", tags: ["九州 Fun Pass", "必拍"], photoTip: "黃南瓜。" }, { id: 903, name: "大濠公園", category: "景點", desc: "湖畔漫步。", tags: ["必拍"], photoTip: "紅涼亭。" }] },
-            { day: 10, city: "福岡", date: "8/22", location: "日田巨人聖地", icon: "⚔️", outfit: "巨人聯名 T", weather: "⛰️ 山區氣溫低。", hotel: { name: "龜山亭飯店", info: "溫泉旅館" }, spots: [{ id: 1001, name: "日田站兵長像", category: "景點", desc: "兵長雕像。", tags: ["必拍"], photoTip: "同姿勢合照。" }, { id: 1002, name: "大山水壩", category: "景點", desc: "巨人牆。", tags: ["必拍"], photoTip: "AR 巨人。" }, { id: 1003, name: "巨人博物館", category: "景點", desc: "作者手稿。", tags: ["必拍"], photoTip: "手稿牆。" }] },
-            { day: 11, city: "福岡", date: "8/23", location: "最終採買與歸途", icon: "🛍️", outfit: "輕便裝", weather: "✈️ 機場冷。", hotel: { name: "台北", info: "回溫馨的家" }, spots: [{ id: 1101, name: "豆田町老街", category: "購物", desc: "小京都散策。", tags: ["必買"], photoTip: "百年老舖。" }, { id: 1102, name: "博多阪急", category: "購物", desc: "專櫃尋寶。", tags: ["必買"], photoTip: "戰利品。" }, { id: 1103, name: "福岡機場", category: "交通", desc: "結束旅程。", tags: [], photoTip: "登機門。" }] }
-        ];
-
         // --- 狀態管理 (使用 LocalStorage) ---
         var selectedDay = 1;
+        var itineraryData = window.itineraryData; // 使用外部載入的資料
         var visitedSpots = JSON.parse(localStorage.getItem('visitedSpots') || '{}');
         var budgets = JSON.parse(localStorage.getItem('dailyBudgets') || '{}');
         var extraBudgets = JSON.parse(localStorage.getItem('extraBudgets') || '{}');
@@ -156,13 +159,32 @@
 
             // Summary
             html += '<div class="summary-card"><span class="day-theme-icon">' + data.icon + '</span><div style="font-size:1.2rem;font-weight:bold;margin-bottom:15px">' + data.date + ' ' + data.location + '</div>';
-            if(data.outfit || data.weather) {
+            if(data.outfit || data.weather || data.startTransport) {
                 html += '<div class="summary-info">';
                 if(data.outfit) html += '<div class="summary-item"><strong>👗 建議穿著</strong>' + data.outfit + '</div>';
                 if(data.weather) html += '<div class="summary-item"><strong>🌡️ 氣候</strong>' + data.weather + '</div>';
+                if(data.startTransport) html += '<div class="summary-item"><strong>🚌 出發交通</strong>' + data.startTransport.mode + ' (' + data.startTransport.duration + ')</div>';
+                if(data.returnTransport) html += '<div class="summary-item"><strong>🏠 回程交通</strong>' + data.returnTransport.mode + ' (' + data.returnTransport.duration + ')</div>';
                 html += '</div>';
             }
             html += '</div>';
+
+            // Tips & Alerts
+            if(data.tips && data.tips.length > 0) {
+                html += '<div class="info-box tips-box"><div class="info-title">💡 今日小撇步</div>' + data.tips.join('<br>') + '</div>';
+            }
+            if(data.alerts && data.alerts.length > 0) {
+                html += '<div class="info-box alerts-box"><div class="info-title">⚠️ 注意事項</div>' + data.alerts.join('<br>') + '</div>';
+            }
+
+            // Master Tips (if any)
+            if(data.dailyMasterTips && data.dailyMasterTips.length > 0) {
+                html += '<div class="master-tips">';
+                data.dailyMasterTips.forEach(function(tip) {
+                    html += '<div class="master-tip-item"><span>' + tip.icon + '</span><div><b>' + tip.title + '：</b>' + tip.desc + '</div></div>';
+                });
+                html += '</div>';
+            }
 
             // Budget Section
             var dailyTotal = parseFloat(extraBudgets[selectedDay]) || 0;
@@ -184,7 +206,8 @@
                 html += '<div class="spot-card ' + (isVisited ? 'visited' : '') + '">';
                 html += '<div class="check-btn ' + (isVisited ? 'checked' : '') + '" onclick="toggleVisited(' + spot.id + ')">' + (isVisited ? '✓' : '') + '</div>';
                 html += '<div class="spot-category">' + catIcon + ' ' + spot.category + '</div>';
-                html += '<div class="spot-name">' + spot.name + '</div>';
+                html += '<div class="spot-name">' + (spot.time ? '<span style="color:var(--accent-matcha)">[' + spot.time + ']</span> ' : '') + spot.name + '</div>';
+                if(spot.hours) html += '<div class="spot-hours">🕒 營業時間: ' + spot.hours + '</div>';
                 html += '<div class="spot-desc">' + spot.desc + '</div>';
                 
                 // Tags
@@ -202,7 +225,8 @@
 
                 // Photo Tip & Nav
                 if(spot.photoTip) html += '<div class="photo-tip">📸 <strong>拍照技巧：</strong>' + spot.photoTip + '</div>';
-                html += '<button class="btn-nav ' + btnClass + '" onclick="go(\'' + spot.name + '\',\'' + data.city + '\')">📍 ' + btnText + '</button>';
+                var navAction = spot.mapsUrl ? 'window.open(\'' + spot.mapsUrl + '\')' : 'go(\'' + spot.name + '\',\'' + data.city + '\')';
+                html += '<button class="btn-nav ' + btnClass + '" onclick="' + navAction + '">📍 ' + btnText + '</button>';
 
                 // Spot Note
                 html += '<div class="spot-note-area"><textarea class="spot-note-input" placeholder="📝 點擊備註此景點的心得..." oninput="updateSpotNote(' + spot.id + ', this.value)" rows="2">' + (spotNotes[spot.id]||'') + '</textarea></div>';
@@ -224,6 +248,16 @@
                     html += '<div class="transit-card"><span>' + tIcon + '</span> ' + spot.transport.mode + ' (' + spot.transport.duration + ')</div>';
                 }
             });
+
+            // Expert Links Section
+            var cityLinks = window.expertLinksByCity[data.city];
+            if(cityLinks && cityLinks.length > 0) {
+                html += '<div class="expert-section"><div class="expert-title">🎒 ' + data.city + ' 專業攻略推薦</div>';
+                cityLinks.forEach(function(link) {
+                    html += '<a href="' + link.url + '" target="_blank" class="expert-link">🔗 ' + link.title + '</a>';
+                });
+                html += '</div>';
+            }
 
             // Daily Note
             html += '<div class="note-section"><div style="font-size:1.1rem;font-weight:bold;color:var(--accent-matcha)">✏️ 今日旅記與心情</div><textarea class="mood-textarea" placeholder="記錄下今天的驚喜或心情吧..." oninput="updateNote(' + selectedDay + ', this.value)">' + (dailyNotes[selectedDay]||'') + '</textarea></div>';
