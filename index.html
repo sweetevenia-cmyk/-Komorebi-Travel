@@ -90,11 +90,22 @@
         <div style="padding: 50px; text-align: center;">載入完整功能版...</div>
     </div>
 
-    <script src="js/itinerary.js" onerror="scriptLoadError()"></script>
     <script>
-        function scriptLoadError() {
-            document.getElementById('app').innerHTML = '<div style="padding:40px; color:red; text-align:center;"><h3>腳本載入失敗</h3><p>無法讀取 js/itinerary.js</p><p><small>路徑：' + window.location.href + '</small></p></div>';
-        }
+        // --- 完整行程資料 (直接內嵌以避免載入失敗) ---
+        window.expertLinksByCity = {"釜山":[{"title":"2026 釜山自由行全攻略","url":"https://bobbytravel.tw/blog/post/231267808"},{"title":"BringYou 釜山旅遊推薦","url":"https://www.bring-you.info/zh-tw/busan-itinerary"}],"福岡":[{"title":"2026 福岡自由行懶人包","url":"https://bobbytravel.tw/blog/post/227448839"},{"title":"九州福岡旅遊指南","url":"https://www.bring-you.info/zh-tw/fukuoka-itinerary"}]};
+        window.itineraryData = [
+            { dailyMasterTips: [{icon: '🚌', title: '利木津巴士', desc: '金海機場 1F 2號站牌可搭往海雲台。'}, {icon: '💱', title: '換錢提醒', desc: '海雲台市場周邊有 Money Box，匯率較好。'}], day: 1, city: "釜山", date: "8/13", location: "抵達釜山海雲台", icon: "✈️", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, outfit: "透氣短 T + 短褲", weather: "☀️ 酷暑晴朗。", tips: ["海雲台市場人潮眾多。"], alerts: ["出關領行李預計需 1 小時。"], startTransport: { mode: "利木津巴士", duration: "約 60 分鐘" }, returnTransport: { mode: "步行", duration: "約 5 分鐘" }, spots: [{ id: 101, time: "19:30", name: "金海國際機場", category: "交通", desc: "抵達釜山第一航廈。", tags: [], photoTip: "機場大門口看板。", mapsUrl: "https://maps.google.com/?q=Gimhae+Airport", transport: { mode: "利木津巴士", duration: "約 60 分鐘" } }, { id: 102, time: "21:00", name: "海雲台市場", hours: "09:00 - 22:00", category: "購物/食物", desc: "晚餐吃 BBQ 炸雞。", tags: ["必吃", "必拍"], photoTip: "霓虹招牌。", mapsUrl: "https://maps.google.com/?q=Haeundae+Market" }] },
+            { dailyMasterTips: [{icon: '⏰', title: 'VBP 啟動', desc: '13:00 啟動後，效期 48hr 涵蓋到 D4。'}, {icon: '📱', title: '天空膠囊', desc: '必須提前在官網預約。'}], day: 2, city: "釜山", date: "8/14", location: "海濱雙列車與夜景", icon: "🚋", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, outfit: "亮色系洋裝", weather: "🌊 海邊風大。", passStatus: "Visit Busan Pass 已啟用", tips: ["13:00 啟用 Pass。"], alerts: ["提前搶票。"], startTransport: { mode: "計程車", duration: "約 5 分鐘" }, returnTransport: { mode: "計程車", duration: "約 15 分鐘" }, spots: [{ id: 201, time: "10:30", name: "天空膠囊列車", category: "活動", desc: "彩色小車廂。", tags: ["必拍"], photoTip: "對拍。", mapsUrl: "https://maps.google.com/?q=Haeundae+Blueline", transport: { mode: "步行", duration: "約 10 分鐘" } }, { id: 202, time: "11:30", name: "味贊王鹽烤肉", hours: "11:30 - 23:00", category: "食物", desc: "厚切豬五花。", tags: ["必吃"], photoTip: "代烤過程。", mapsUrl: "https://maps.google.com/?q=Mitchanwang", transport: { mode: "計程車", duration: "約 5 分鐘" } }, { id: 203, time: "13:00", name: "海岸列車 (VBP)", category: "活動", desc: "Pass 兌換來回票。", tags: ["Visit Busan Pass", "必拍"], photoTip: "側拍海岸。", transport: { mode: "步行", duration: "約 15 分鐘" } }, { id: 204, time: "14:00", name: "BUSAN X the SKY", category: "景點", desc: "100層觀景台。", tags: ["Visit Busan Pass", "必拍"], photoTip: "玻璃步道。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 205, time: "16:00", name: "新世界 Spa Land", hours: "08:00 - 23:00", category: "活動", desc: "汗蒸幕體驗。", tags: ["Visit Busan Pass", "必吃"], photoTip: "羊角頭巾。", transport: { mode: "計程車", duration: "約 20 分鐘" } }, { id: 206, time: "20:00", name: "鑽石灣遊艇", category: "活動", desc: "夜景遊艇。", tags: ["Visit Busan Pass", "必拍"], photoTip: "廣安大橋。" }] },
+            { dailyMasterTips: [{icon: '🖼️', title: '影島 Arte', desc: '建議穿全白衣服。'}, {icon: '🚕', title: 'Kakao T', desc: '省下 40 分鐘移動時間。'}], day: 3, city: "釜山", date: "8/15", location: "影島藝術與松島", icon: "🎨", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, outfit: "白色系服飾", weather: "☁️ 多雲轉晴。", passStatus: "Visit Busan Pass 使用中", tips: ["Arte Museum 早點進場。"], alerts: ["車程約 20 分鐘。"], startTransport: { mode: "計程車", duration: "約 35 分鐘" }, returnTransport: { mode: "地鐵", duration: "約 45 分鐘" }, spots: [{ id: 301, time: "10:00", name: "影島 Arte Museum", category: "活動", desc: "數位光影藝術。", tags: ["Visit Busan Pass", "必拍"], photoTip: "投影互動。", transport: { mode: "步行", duration: "約 3 分鐘" } }, { id: 302, time: "11:30", name: "P.ARK 海景咖啡廳", hours: "10:00 - 22:00", category: "食物/景點", desc: "落地窗港灣。", tags: ["必拍"], photoTip: "剪影照。", transport: { mode: "計程車", duration: "約 20 分鐘" } }, { id: 303, time: "14:00", name: "松島海上纜車", category: "活動", desc: "橫跨公海。", tags: ["Visit Busan Pass", "必拍"], photoTip: "透明車廂。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 304, time: "17:00", name: "釜山鑽石塔", category: "景點", desc: "看夕陽下的市景。", tags: ["Visit Busan Pass", "必拍"], photoTip: "捕捉夕陽。", transport: { mode: "步行", duration: "約 10 分鐘" } }, { id: 305, time: "18:30", name: "南浦洞購物", category: "購物", desc: "女兒的快樂時光。", tags: ["必買"], photoTip: "戰利品照。" }] },
+            { dailyMasterTips: [{icon: '🦀', title: '機張攻略', desc: '選送蟹膏炒飯的店家。'}, {icon: '🎡', title: '樂天衝刺', desc: 'VBP 最後一小時掃進場。'}], day: 4, city: "釜山", date: "8/16", location: "機張速度與樂園", icon: "🏎️", hotel: { name: "釜山 MS Hotel", info: "海雲台海景第一排" }, outfit: "運動風套裝", weather: "🔥 炎熱。", passStatus: "Visit Busan Pass 最終日", tips: ["13:00 前進場。"], alerts: ["滑車戴頭帽。"], startTransport: { mode: "計程車", duration: "約 25 分鐘" }, returnTransport: { mode: "計程車", duration: "約 25 分鐘" }, spots: [{ id: 401, time: "10:00", name: "Skyline Luge", category: "活動", desc: "山道急速滑下。", tags: ["Visit Busan Pass", "必玩"], photoTip: "終點照。", transport: { mode: "步行", duration: "約 5 分鐘" } }, { id: 402, time: "12:15", name: "樂天世界釜山", category: "活動", desc: "童話樂園。", tags: ["Visit Busan Pass", "必玩"], photoTip: "城堡背景。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 403, time: "17:00", name: "海東龍宮寺", category: "景點", desc: "沿海古寺。", tags: ["必拍"], photoTip: "側拍大佛。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 404, time: "19:00", name: "機張市場松葉蟹", hours: "06:00 - 21:00", category: "食物", desc: "名產松葉蟹。", tags: ["必吃"], photoTip: "特寫蟹腳。" }] },
+            { dailyMasterTips: [{icon: '🛅', title: '寄存', desc: '南浦樂天百貨 B1。'}, {icon: '⛴️', title: '登船', desc: '下載好影片。'}], day: 5, city: "釜山", date: "8/17", location: "文青慢活與登船", icon: "🚢", hotel: { name: "新山茶花號", info: "夜宿渡輪" }, outfit: "淡雅風", weather: "🌅 傍晚登船。", tips: ["南浦百貨寄物。"], alerts: ["18:30 抵達碼頭。"], startTransport: { mode: "計程車", duration: "約 40 分鐘" }, returnTransport: { mode: "計程車", duration: "約 10 分鐘" }, spots: [{ id: 501, time: "11:30", name: "甘川洞文化村", category: "景點", desc: "彩色房子小王子。", tags: ["必拍"], photoTip: "背影照。", transport: { mode: "計程車", duration: "約 25 分鐘" } }, { id: 502, time: "15:00", name: "白淺灘文化村", category: "景點", desc: "海景咖啡廳。", tags: ["必拍"], photoTip: "窗邊照。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 503, time: "16:30", name: "南浦樂天超市", category: "購物", desc: "補泡麵零食。", tags: ["必買"], photoTip: "購物車。", transport: { mode: "計程車", duration: "約 10 分鐘" } }, { id: 504, time: "18:30", name: "釜山港碼頭", category: "交通", desc: "前往福岡。", tags: ["必拍"], photoTip: "甲板夜景。" }] },
+            { dailyMasterTips: [{icon: '🚖', title: '博多港', desc: '計程車到飯店約 1500日圓。'}, {icon: '🛒', title: '驚安', desc: '飯店對面 24hr。'}], day: 6, city: "福岡", date: "8/18", location: "福岡初印象", icon: "🍜", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, outfit: "日系休閒", weather: "🌤️ 濕熱。", tips: ["驚安掃貨。"], alerts: ["出關搭車。"], startTransport: { mode: "計程車", duration: "約 15 分鐘" }, returnTransport: { mode: "步行", duration: "約 10 分鐘" }, spots: [{ id: 601, time: "10:00", name: "博多港抵達", category: "交通", desc: "抵達福岡。", tags: [], photoTip: "下船首拍。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 602, time: "13:00", name: "櫛田神社", category: "景點", desc: "巨大的山笠。", tags: ["必拍"], photoTip: "山笠展示。", transport: { mode: "步行", duration: "約 5 分鐘" } }, { id: 603, time: "15:00", name: "博多運河城", category: "購物", desc: "音樂噴泉。", tags: ["必拍"], photoTip: "水舞表演。", transport: { mode: "步行", duration: "約 10 分鐘" } }, { id: 604, time: "19:00", name: "一蘭拉麵總店", hours: "24小時", category: "食物", desc: "地標紅燈籠。", tags: ["必吃"], photoTip: "紅燈籠牆。" }] },
+            { dailyMasterTips: [{icon: '🥐', title: 'DACOMECCA', desc: '07:45 去排隊。'}, {icon: '🌅', title: '夕陽', desc: '提前 1 小時登塔。'}], day: 7, city: "福岡", date: "8/19", location: "視覺藝術與夕陽", icon: "🗼", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, outfit: "淺色衣物", weather: "🌡️ 高溫。", passStatus: "九州 Fun Pass 使用中", tips: ["早起排早餐。"], alerts: ["穿防滑鞋。"], startTransport: { mode: "步行", duration: "約 15 分鐘" }, returnTransport: { mode: "公車", duration: "約 25 分鐘" }, spots: [{ id: 701, time: "08:30", name: "DACOMECCA", hours: "08:00 - 20:00", category: "食物", desc: "網美早餐。", tags: ["必吃"], photoTip: "夾心麵包。", transport: { mode: "地鐵", duration: "約 20 分鐘" } }, { id: 702, time: "11:00", name: "teamLab Forest", category: "活動", desc: "數位森林。", tags: ["九州 Fun Pass", "必拍"], photoTip: "投影花海。", transport: { mode: "公車", duration: "約 15 分鐘" } }, { id: 703, time: "17:30", name: "福岡塔", category: "景點", desc: "夕陽聖地。", tags: ["九州 Fun Pass", "必拍"], photoTip: "海上日落。" }] },
+            { dailyMasterTips: [{icon: '🛶', title: '柳川', desc: '建議租借斗笠。'}, {icon: '⛩️', title: '星巴克', desc: '隈研吾大師作。'}], day: 8, city: "福岡", date: "8/20", location: "古都聖地", icon: "🎋", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, outfit: "優雅休閒", weather: "🌦️ 雷陣雨。", passStatus: "太宰府・柳川套票", tips: ["買烤年糕。"], alerts: ["班次少。"], startTransport: { mode: "電車", duration: "約 50 分鐘" }, returnTransport: { mode: "電車", duration: "約 35 分鐘" }, spots: [{ id: 801, time: "10:00", name: "柳川乘船", category: "活動", desc: "運河巡禮。", tags: ["必拍"], photoTip: "划船工。", transport: { mode: "電車", duration: "約 45 分鐘" } }, { id: 802, time: "13:30", name: "竈門神社", category: "景點", desc: "最美御守。", tags: ["必買"], photoTip: "社務所。", transport: { mode: "接駁車", duration: "約 10 分鐘" } }, { id: 803, time: "15:00", name: "太宰府天滿宮", hours: "09:00 - 17:00", category: "景點", desc: "梅餅與星巴克。", tags: ["必吃", "必拍"], photoTip: "木樁牆。" }] },
+            { dailyMasterTips: [{icon: '🚇', title: '地鐵', desc: '七隈線很深。'}, {icon: '🧺', title: '野餐', desc: '美術館看完南瓜去湖邊。'}], day: 9, city: "福岡", date: "8/21", location: "藝文公園散策", icon: "⛲", hotel: { name: "博多遠景酒店", info: "Hotel Vista" }, outfit: "棉麻裝", weather: "🍃 舒適。", passStatus: "九州 Fun Pass 使用中", tips: ["買文具。"], alerts: ["美術館禁拍區。"], startTransport: { mode: "地鐵", duration: "約 15 分鐘" }, returnTransport: { mode: "地鐵", duration: "約 10 分鐘" }, spots: [{ id: 901, time: "10:30", name: "六本松蔦屋書店", category: "購物", desc: "最美書店。", tags: ["必買"], photoTip: "書廊。", transport: { mode: "地鐵", duration: "約 10 分鐘" } }, { id: 902, time: "12:00", name: "福岡市美術館", category: "景點", desc: "草間彌生南瓜。", tags: ["九州 Fun Pass", "必拍"], photoTip: "黃南瓜。", transport: { mode: "步行", duration: "約 5 分鐘" } }, { id: 903, time: "14:30", name: "大濠公園", category: "景點", desc: "湖畔漫步。", tags: ["必拍"], photoTip: "紅涼亭。" }] },
+            { dailyMasterTips: [{icon: '⚔️', title: 'HITA APP', desc: '觸發 AR 巨人。'}, {icon: '🍱', title: '由布院之森', desc: '搶購蛋糕捲。'}], day: 10, city: "福岡", date: "8/22", location: "日田巨人聖地", icon: "⚔️", hotel: { name: "龜山亭飯店", info: "溫泉旅館" }, outfit: "巨人聯名 T", weather: "⛰️ 山區氣溫低。", passStatus: "由布院之森", tips: ["預約屋形船。"], alerts: ["預約車。"], startTransport: { mode: "由布院之森", duration: "約 80 分鐘" }, returnTransport: { mode: "步行", duration: "約 10 分鐘" }, spots: [{ id: 1001, time: "11:30", name: "日田站兵長像", category: "景點", desc: "兵長雕像。", tags: ["必拍"], photoTip: "同姿勢合照。", transport: { mode: "計程車", duration: "約 15 分鐘" } }, { id: 1002, time: "14:00", name: "大山水壩", category: "景點", desc: "巨人牆。", tags: ["必拍"], photoTip: "AR 巨人。", transport: { mode: "計程車", duration: "約 20 分鐘" } }, { id: 1003, time: "16:00", name: "巨人博物館", category: "景點", desc: "作者手稿。", tags: ["必拍"], photoTip: "手稿牆。" }] },
+            { dailyMasterTips: [{icon: '🐵', title: '蒙奇奇', desc: '博多阪急 7F。'}, {icon: '🕒', title: '機場', desc: '提早 2.5 小時抵達。'}], day: 11, city: "福岡", date: "8/23", location: "最終採買與歸途", icon: "🛍️", hotel: { name: "回溫馨的家", info: "台北" }, outfit: "輕便裝", weather: "✈️ 機場冷。", tips: ["阪急掃貨。"], alerts: ["19:00抵達機場。"], startTransport: { mode: "步行", duration: "約 15 分鐘" }, returnTransport: { mode: "無", duration: "快樂賦歸" }, spots: [{ id: 1101, time: "10:00", name: "豆田町老街", category: "購物", desc: "小京都散策。", tags: ["必買"], photoTip: "百年老舖。", transport: { mode: "JR 電車", duration: "約 60 分鐘" } }, { id: 1102, time: "14:00", name: "博多阪急蒙奇奇", category: "購物", desc: "專櫃尋寶。", tags: ["必買"], photoTip: "戰利品。", transport: { mode: "地鐵", duration: "約 15 分鐘" } }, { id: 1103, time: "19:00", name: "福岡機場", category: "交通", desc: "結束旅程。", tags: ["必買"], photoTip: "登機門。" }] }
+        ];
 
         // --- 全域錯誤監控 ---
         window.onerror = function(msg, url, line) {
@@ -104,7 +115,6 @@
 
         // --- 狀態管理 ---
         var selectedDay = 1;
-        var itineraryData = null;
         var visitedSpots = {}, budgets = {}, extraBudgets = {}, dailyNotes = {}, spotNotes = {}, photos = {};
 
         function initData() {
@@ -117,32 +127,12 @@
                 photos = JSON.parse(localStorage.getItem('capturedPhotos') || '{}');
             } catch (e) {
                 console.warn("LocalStorage 讀取失敗，已重置狀態", e);
-                // 不中斷程式，僅重置
             }
         }
 
         function startApp() {
             initData();
-            itineraryData = window.itineraryData;
-            
-            if (!itineraryData || !window.expertLinksByCity) {
-                document.getElementById('app').innerHTML = '<div style="padding:40px; text-align:center;"><h3>資料載入中...</h3><p>正在等候行程資料 (js/itinerary.js)...</p></div>';
-                
-                var retryCount = 0;
-                var timer = setInterval(function() {
-                    retryCount++;
-                    if (window.itineraryData && window.expertLinksByCity) {
-                        clearInterval(timer);
-                        itineraryData = window.itineraryData;
-                        render();
-                    } else if (retryCount > 10) {
-                        clearInterval(timer);
-                        document.getElementById('app').innerHTML = '<div style="padding:40px; color:red; text-align:center;"><h3>錯誤：找不到行程資料</h3><p>請檢查 js/itinerary.js 檔案路徑與內容是否正確。</p><button onclick="location.reload()" style="margin-top:20px; padding:10px 20px;">重新整理</button></div>';
-                    }
-                }, 300);
-            } else {
-                render();
-            }
+            render();
         }
 
         function saveState() {
@@ -188,8 +178,7 @@
         // --- 渲染畫面 ---
         function render() {
             try {
-                if (!itineraryData || !itineraryData[selectedDay - 1]) return;
-                var data = itineraryData[selectedDay - 1];
+                var data = window.itineraryData[selectedDay - 1];
                 var isBusan = data.city === "釜山";
                 var btnClass = isBusan ? "naver-btn" : "google-btn";
                 var btnText = isBusan ? "Naver 導航" : "Google 導航";
@@ -199,7 +188,7 @@
                 // Header & Nav
                 html += '<div class="header"><h1>木漏れ日旅程</h1><div style="text-align:right"><div style="font-size:0.8rem;color:var(--accent-matcha);font-weight:bold">2026 Summer</div>' + (data.passStatus ? '<div style="font-size:0.7rem;color:var(--tag-vbp);font-weight:bold">🎫 ' + data.passStatus + '</div>' : '') + '</div></div>';
                 html += '<div class="day-selector">';
-                itineraryData.forEach(function(d) { html += '<button class="day-tab ' + (selectedDay === d.day ? 'active' : '') + '" onclick="setDay(' + d.day + ')">Day ' + d.day + '</button>'; });
+                window.itineraryData.forEach(function(d) { html += '<button class="day-tab ' + (selectedDay === d.day ? 'active' : '') + '" onclick="setDay(' + d.day + ')">Day ' + d.day + '</button>'; });
                 html += '</div>';
 
                 // Summary
